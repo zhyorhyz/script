@@ -24,5 +24,5 @@ curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_and_co
 ```
 # install_nginx_proxy_manager
 ```bash
-curl -fsSL https://github.com/zhyorhyz/script/raw/main/install_nginx_proxy_manager.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_nginx_proxy_manager.sh | sudo bash
 ```
