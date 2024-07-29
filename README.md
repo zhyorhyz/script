@@ -10,3 +10,7 @@ curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/creat_swap.sh 
 ```bash
 curl -L https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh -o nezha.sh && chmod +x nezha.sh && sudo ./nezha.sh
 ```
+# enable_bash_completion.sh
+```bash
+curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/enable_bash_completion.sh | sudo bash
+```
