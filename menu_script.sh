@@ -8,7 +8,7 @@ function show_help() {
     echo
     echo "选项:"
     echo "  1   启用 BBR"
-    echo "  2   创建交换分区"
+    echo "  2   以交换文件的方式创建交换空间"
     echo "  3   安装 Nezha"
     echo "  4   启用 Bash 自动补全"
     echo "  5   下载并安装 Docker Compose"
@@ -29,7 +29,7 @@ function execute_option() {
             curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/enable_bbr.sh | sudo bash || { echo "启用 BBR 失败"; exit 1; }
             ;;
         2)
-            echo "创建交换分区..."
+            echo "以交换文件的方式创建交换空间..."
             curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/creat_swap.sh -o creat_swap.sh && sudo chmod +x creat_swap.sh && sudo ./creat_swap.sh && sudo rm -rf creat_swap.sh || { echo "创建交换分区失败"; exit 1; }
             ;;
         3)
