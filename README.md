@@ -26,3 +26,7 @@ curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_and_co
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_nginx_proxy_manager.sh | sudo bash
 ```
+# install_and_configure_lsky_pro
+```bash
+curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_and_configure_lsky_pro.sh | sudo bash
+```
