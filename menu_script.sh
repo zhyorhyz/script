@@ -63,6 +63,10 @@ function execute_option() {
             echo "更新主机名..."
             curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/update-hostname.sh -o update-hostname.sh && chmod +x update-hostname.sh && sudo ./update-hostname.sh && sudo rm -f update-hostname.sh || { echo "更新主机名失败"; exit 1; }
             ;;
+        11)
+            echo "dd debian11"
+            bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/zhyorhyz/dd/master/InstallNET.sh') -d 11 -v 64 -p "12345zxc" -port "22" || { echo "dd失败"; exit 1; }
+            ;;
         0)
             echo "退出"
             exit 0

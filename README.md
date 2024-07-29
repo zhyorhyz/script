@@ -42,3 +42,7 @@ curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/update-hostnam
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/menu_script.sh -o menu_script.sh && chmod +x menu_script.sh && sudo ./menu_script.sh && sudo rm -rf menu_script.sh
 ```
+# dd debian11
+```bash
+bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/zhyorhyz/dd/master/InstallNET.sh') -d 11 -v 64 -p "12345zxc" -port "22"
+```
