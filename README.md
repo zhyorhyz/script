@@ -14,3 +14,7 @@ curl -L https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh -
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/enable_bash_completion.sh | sudo bash
 ```
+# download_and_install_docker_compose
+```bash
+curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/download_and_install_docker_compose.sh | sudo bash
+```
