@@ -4,7 +4,7 @@ curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/enable_bbr.sh 
 ```
 # creat_swap
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/creat_swap.sh -o creat_swap.sh && sudo chmod +x creat_swap.sh && sudo rm -rf creat_swap.sh
+curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/creat_swap.sh -o creat_swap.sh && sudo chmod +x creat_swap.sh && sudo ./creat_swap.sh && sudo rm -rf creat_swap.sh
 ```
 # install nezha
 ```bash

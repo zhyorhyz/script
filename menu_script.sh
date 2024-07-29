@@ -30,7 +30,7 @@ function execute_option() {
             ;;
         2)
             echo "创建交换分区..."
-            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/creat_swap.sh -o creat_swap.sh && sudo chmod +x creat_swap.sh && sudo rm -rf creat_swap.sh || { echo "创建交换分区失败"; exit 1; }
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/creat_swap.sh -o creat_swap.sh && sudo chmod +x creat_swap.sh && sudo ./creat_swap.sh && sudo rm -rf creat_swap.sh || { echo "创建交换分区失败"; exit 1; }
             ;;
         3)
             echo "安装 Nezha..."
