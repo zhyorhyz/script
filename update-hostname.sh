@@ -10,6 +10,26 @@ function show_help() {
     echo "  -h, --help         显示此帮助信息"
 }
 
+# 检查并安装 jq 工具
+function check_and_install_jq() {
+    if ! command -v jq &> /dev/null; then
+        echo "jq 工具未安装，正在安装..."
+        if [ -x "$(command -v apt-get)" ]; then
+            sudo apt-get update
+            sudo apt-get install -y jq
+        elif [ -x "$(command -v yum)" ]; then
+            sudo yum install -y jq
+        elif [ -x "$(command -v dnf)" ]; then
+            sudo dnf install -y jq
+        elif [ -x "$(command -v brew)" ]; then
+            brew install jq
+        else
+            echo "未能自动安装 jq，请手动安装。"
+            exit 1
+        fi
+    fi
+}
+
 # 解析命令行选项
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -18,6 +38,9 @@ while [[ "$#" -gt 0 ]]; do
     esac
     shift
 done
+
+# 检查并安装 jq 工具
+check_and_install_jq
 
 # 询问用户输入制造商名称
 read -p "请输入制造商名称（例如 vendor）： " MANUFACTURER
@@ -59,7 +82,7 @@ fi
 
 # 确保主机名条目存在
 if ! grep -q "127.0.0.1[[:space:]]$NEW_HOSTNAME" /etc/hosts; then
-    sudo sed -i "/^127.0.0.1[[:space:]]/d" /etc/hosts
+    sudo sed -i "/^127.0.0.1[[:space:]].*/d" /etc/hosts
     echo "127.0.0.1    $NEW_HOSTNAME" | sudo tee -a /etc/hosts > /dev/null
 fi
 
