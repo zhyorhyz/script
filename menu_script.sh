@@ -17,6 +17,7 @@ function show_help() {
     echo "  8   安装和配置 Lsky Pro"
     echo "  9   安装极光面板（Jiguang）"
     echo "  10  更新主机名"
+    echo "  11  dd debian11"
     echo "  0   退出"
 }
 
