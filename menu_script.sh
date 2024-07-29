@@ -50,7 +50,7 @@ function execute_option() {
             ;;
         7)
             echo "安装 Nginx Proxy Manager..."
-            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_nginx_proxy_manager.sh | sudo bash || { echo "安装 Nginx Proxy Manager 失败"; exit 1; }
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_nginx_proxy_manager.sh -o install_nginx_proxy_manager.sh && sudo chmod +x install_nginx_proxy_manager.sh && sudo ./install_nginx_proxy_manager.sh && sudo rm -rf install_nginx_proxy_manager.sh  || { echo "安装 Nginx Proxy Manager 失败"; exit 1; }
             ;;
         8)
             echo "安装和配置 Lsky Pro..."
