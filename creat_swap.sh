@@ -27,7 +27,7 @@ fi
 # 关闭并删除当前交换文件
 if [ -f "$SWAPFILE" ]; then
   echo "关闭交换文件 $SWAPFILE..."
-  swapoff $SWAPFILE
+  swapoff $SWAPFILE 2>&1
   if [ $? -ne 0 ]; then
     echo "关闭交换文件失败。请检查是否存在其他问题。"
     exit 1
