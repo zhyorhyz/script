@@ -63,4 +63,8 @@ if ! grep -q "127.0.0.1[[:space:]]$NEW_HOSTNAME" /etc/hosts; then
     echo "127.0.0.1    $NEW_HOSTNAME" | sudo tee -a /etc/hosts > /dev/null
 fi
 
+# 打印最终的 /etc/hosts 内容以验证更改
+echo "最终的 /etc/hosts 内容:"
+cat /etc/hosts
+
 echo "主机名已更新为 $NEW_HOSTNAME"
