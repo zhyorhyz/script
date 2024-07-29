@@ -24,35 +24,26 @@ if [ "$(id -u)" -ne "0" ]; then
   exit 1
 fi
 
-# 计算块大小和块数
-case $SWAPSIZE in
-  *G)
-    BLOCKSIZE=1M
-    COUNT=$(echo ${SWAPSIZE%G} | awk '{print $1 * 1024}')
-    ;;
-  *M)
-    BLOCKSIZE=1M
-    COUNT=${SWAPSIZE%M}
-    ;;
-  *)
-    echo "不支持的交换文件大小格式。请使用类似 1G 或 512M 的格式。"
-    exit 1
-    ;;
-esac
-
-# 删除旧的交换文件（如果存在）
+# 关闭并删除当前交换文件
 if [ -f "$SWAPFILE" ]; then
+  echo "关闭交换文件 $SWAPFILE..."
+  swapoff $SWAPFILE
+  if [ $? -ne 0 ]; then
+    echo "关闭交换文件失败。请检查是否存在其他问题。"
+    exit 1
+  fi
+
   echo "删除旧的交换文件 $SWAPFILE..."
   rm -f $SWAPFILE
   if [ $? -ne 0 ]; then
-    echo "删除交换文件失败。"
+    echo "删除交换文件失败。请检查文件权限或是否被挂载。"
     exit 1
   fi
 fi
 
 # 创建新的交换文件
 echo "创建交换文件..."
-dd if=/dev/zero of=$SWAPFILE bs=$BLOCKSIZE count=$COUNT status=progress
+dd if=/dev/zero of=$SWAPFILE bs=1M count=$(echo ${SWAPSIZE%G} | awk '{print $1 * 1024}') status=progress
 if [ $? -ne 0 ]; then
   echo "创建交换文件失败。"
   exit 1
