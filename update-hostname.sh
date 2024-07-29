@@ -51,7 +51,17 @@ sudo hostnamectl set-hostname "$NEW_HOSTNAME"
 
 # 更新 hosts 文件
 echo "更新 /etc/hosts 文件..."
-sudo sed -i "/127.0.0.1/d" /etc/hosts
-echo "127.0.0.1 $NEW_HOSTNAME" | sudo tee -a /etc/hosts
+# 如果没有 localhost 条目，则添加
+if ! grep -q "127.0.0.1[[:space:]]localhost" /etc/hosts; then
+    echo "127.0.0.1    localhost" | sudo tee -a /etc/hosts
+fi
+
+# 更新或添加新的主机名条目
+if grep -q "127.0.0.1[[:space:]]" /etc/hosts; then
+    # 更新已有的 127.0.0.1 条目
+    sudo sed -i -e "/^127.0.0.1[[:space:]]/d" /etc/hosts
+fi
+
+echo -e "127.0.0.1\t$NEW_HOSTNAME" | sudo tee -a /etc/hosts
 
 echo "主机名已更新为 $NEW_HOSTNAME"
