@@ -18,6 +18,7 @@ function show_help() {
     echo "  9   安装极光面板（Jiguang）"
     echo "  10  更新主机名"
     echo "  11  dd debian11"
+    echo "  12  x-ui-非原版"
     echo "  0   退出"
 }
 
@@ -68,6 +69,10 @@ function execute_option() {
             echo "dd debian11"
             bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/zhyorhyz/dd/master/InstallNET.sh') -d 11 -v 64 -p "12345zxc" -port "22" || { echo "dd失败"; exit 1; }
             ;;
+        11)
+            echo "安装 x-ui-非原版..."
+            bash <(curl -Ls https://raw.githubusercontent.com/FranzKafkaYu/x-ui/master/install.sh)
+            ;;       
         0)
             echo "退出"
             exit 0

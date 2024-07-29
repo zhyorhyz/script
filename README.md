@@ -46,3 +46,7 @@ curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/menu_script.sh
 ```bash
 bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/zhyorhyz/dd/master/InstallNET.sh') -d 11 -v 64 -p "12345zxc" -port "22"
 ```
+# x-ui-Non-original
+```bash
+bash <(curl -Ls https://raw.githubusercontent.com/FranzKafkaYu/x-ui/master/install.sh)
+```
