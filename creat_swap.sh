@@ -24,13 +24,20 @@ if [ "$(id -u)" -ne "0" ]; then
   exit 1
 fi
 
-# 关闭并删除当前交换文件
+# 检查交换文件是否存在并关闭
 if [ -f "$SWAPFILE" ]; then
-  echo "关闭交换文件 $SWAPFILE..."
-  swapoff $SWAPFILE 2>&1
-  if [ $? -ne 0 ]; then
-    echo "关闭交换文件失败。请检查是否存在其他问题。"
-    exit 1
+  echo "检查交换文件 $SWAPFILE..."
+
+  # 确保交换文件已经被启用
+  if grep -q "$SWAPFILE" /proc/swaps; then
+    echo "关闭交换文件 $SWAPFILE..."
+    swapoff $SWAPFILE
+    if [ $? -ne 0 ]; then
+      echo "关闭交换文件失败。请检查文件是否正确挂载。"
+      exit 1
+    fi
+  else
+    echo "交换文件 $SWAPFILE 没有被启用，无法关闭。"
   fi
 
   echo "删除旧的交换文件 $SWAPFILE..."
