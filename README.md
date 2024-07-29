@@ -34,3 +34,7 @@ curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_and_co
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/Aurora-Admin-Panel/deploy/main/install.sh)
 ```
+# update-hostname
+```bash
+curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/update-hostname.sh | sudo bash
+```
