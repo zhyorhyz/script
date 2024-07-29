@@ -17,8 +17,7 @@ function show_help() {
     echo "  8   安装和配置 Lsky Pro"
     echo "  9   安装极光面板（Jiguang）"
     echo "  10  更新主机名"
-    echo "  h   显示帮助信息"
-    echo "  q   退出"
+    echo "  0   退出"
 }
 
 # 执行选择的操作
@@ -64,10 +63,7 @@ function execute_option() {
             echo "更新主机名..."
             curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/update-hostname.sh -o update-hostname.sh && chmod +x update-hostname.sh && sudo ./update-hostname.sh && sudo rm -f update-hostname.sh || { echo "更新主机名失败"; exit 1; }
             ;;
-        h)
-            show_help
-            ;;
-        q)
+        0)
             echo "退出"
             exit 0
             ;;
