@@ -41,9 +41,25 @@ if [ -f "$SWAPFILE" ]; then
   fi
 fi
 
+# 计算块大小和块数
+case $SWAPSIZE in
+  *G)
+    BLOCKSIZE=1M
+    COUNT=$(echo ${SWAPSIZE%G} | awk '{print $1 * 1024}')
+    ;;
+  *M)
+    BLOCKSIZE=1M
+    COUNT=${SWAPSIZE%M}
+    ;;
+  *)
+    echo "不支持的交换文件大小格式。请使用类似 1G 或 512M 的格式。"
+    exit 1
+    ;;
+esac
+
 # 创建新的交换文件
-echo "创建交换文件..."
-dd if=/dev/zero of=$SWAPFILE bs=1M count=$(echo ${SWAPSIZE%G} | awk '{print $1 * 1024}') status=progress
+echo "创建交换文件，块大小：$BLOCKSIZE，块数：$COUNT"
+dd if=/dev/zero of=$SWAPFILE bs=$BLOCKSIZE count=$COUNT status=progress
 if [ $? -ne 0 ]; then
   echo "创建交换文件失败。"
   exit 1
