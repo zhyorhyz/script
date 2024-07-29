@@ -52,18 +52,29 @@ sudo hostnamectl set-hostname "$NEW_HOSTNAME"
 # 更新 /etc/hosts 文件
 echo "更新 /etc/hosts 文件..."
 
+# 临时文件
+HOSTS_TMP=$(mktemp)
+
 # 确保 /etc/hosts 文件中包含 127.0.0.1    localhost
-if ! grep -q "127.0.0.1[[:space:]]localhost" /etc/hosts; then
-    echo "127.0.0.1    localhost" | sudo tee -a /etc/hosts
+if grep -q "127.0.0.1[[:space:]]localhost" /etc/hosts; then
+    # 如果已包含 127.0.0.1    localhost，直接复制文件
+    cp /etc/hosts "$HOSTS_TMP"
+else
+    # 如果不包含，添加 127.0.0.1    localhost
+    echo -e "127.0.0.1\tlocalhost" | sudo tee -a /etc/hosts > /dev/null
+    cp /etc/hosts "$HOSTS_TMP"
 fi
 
 # 确保 /etc/hosts 文件中包含新的主机名
-if grep -q "127.0.0.1[[:space:]]" /etc/hosts; then
+if grep -q "127.0.0.1[[:space:]]" "$HOSTS_TMP"; then
     # 更新已有的 127.0.0.1 条目
-    sudo sed -i -e "/^127.0.0.1[[:space:]]/d" /etc/hosts
+    sudo sed -i -e "/^127.0.0.1[[:space:]]/d" "$HOSTS_TMP"
 fi
 
 # 添加新的主机名条目
-echo -e "127.0.0.1\t$NEW_HOSTNAME" | sudo tee -a /etc/hosts
+echo -e "127.0.0.1\t$NEW_HOSTNAME" | sudo tee -a "$HOSTS_TMP" > /dev/null
 
-echo "主机名已更新为 $NEW_HOSTNAME"
+# 移动临时文件替换原文件
+sudo mv "$HOSTS_TMP" /etc/hosts
+
+echo "主机名已更新为 $N
