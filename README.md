@@ -36,5 +36,5 @@ bash <(curl -fsSL https://raw.githubusercontent.com/Aurora-Admin-Panel/deploy/ma
 ```
 # update-hostname
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/update-hostname.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/update-hostname.sh -o update-hostname.sh && chmod +x update-hostname.sh && sudo ./update-hostname.sh
 ```

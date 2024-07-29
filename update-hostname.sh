@@ -19,47 +19,39 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
-# 读取用户输入
-echo "请输入制造商名称（例如 vendor）："
-read -r MANUFACTURER
+# 询问用户输入制造商名称
+read -p "请输入制造商名称（例如 vendor）： " MANUFACTURER
 
-# 确保制造商名称不为空
 if [ -z "$MANUFACTURER" ]; then
     echo "制造商名称不能为空。"
     exit 1
 fi
 
-# 获取 IP 地址
+# 提取 IP 地址
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
+echo "提取的 IP 地址: $IP_ADDRESS"
 
-# 如果 IP 地址为空，使用回环地址
-if [ -z "$IP_ADDRESS" ]; then
-    IP_ADDRESS="127.0.0.1"
-fi
+# 获取国家代码
+echo "获取国家代码..."
+API_RESPONSE=$(curl -s "http://ip-api.com/json/$IP_ADDRESS")
+echo "API 响应: $API_RESPONSE"
+COUNTRY_CODE=$(echo "$API_RESPONSE" | jq -r '.countryCode')
 
-# 获取地理位置
-GEO_INFO=$(curl -s https://ipinfo.io/$IP_ADDRESS?token=YOUR_API_TOKEN)
-
-# 提取国家代码
-COUNTRY_CODE=$(echo $GEO_INFO | jq -r '.country')
-
-# 检查是否成功提取到国家代码
-if [ "$COUNTRY_CODE" == "null" ]; then
+if [ -z "$COUNTRY_CODE" ] || [ "$COUNTRY_CODE" == "null" ]; then
     echo "无法提取国家代码。"
     exit 1
 fi
 
-# 生成主机名
+# 生成新的主机名
 NEW_HOSTNAME="${MANUFACTURER}-${COUNTRY_CODE}"
+echo "新的主机名: $NEW_HOSTNAME"
 
-# 更新 /etc/hostname 文件
-echo "$NEW_HOSTNAME" | sudo tee /etc/hostname
-
-# 更新 /etc/hosts 文件
-sudo sed -i "/^127.0.0.1\s\+rn-us/d" /etc/hosts
-echo "127.0.0.1   $NEW_HOSTNAME" | sudo tee -a /etc/hosts
-
-# 应用更改
+# 修改主机名
 sudo hostnamectl set-hostname "$NEW_HOSTNAME"
 
-echo "主机名已更改为 $NEW_HOSTNAME"
+# 更新 hosts 文件
+echo "更新 /etc/hosts 文件..."
+sudo sed -i "/127.0.0.1/d" /etc/hosts
+echo "127.0.0.1 $NEW_HOSTNAME" | sudo tee -a /etc/hosts
+
+echo "主机名已更新为 $NEW_HOSTNAME"
