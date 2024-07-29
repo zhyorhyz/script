@@ -20,7 +20,8 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # 读取用户输入
-read -p "请输入制造商名称（例如 vendor）： " MANUFACTURER
+echo "请输入制造商名称（例如 vendor）："
+read -r MANUFACTURER
 
 # 确保制造商名称不为空
 if [ -z "$MANUFACTURER" ]; then
