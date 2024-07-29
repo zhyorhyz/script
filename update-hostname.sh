@@ -13,7 +13,7 @@ function show_help() {
 # 检查并安装 jq 工具
 function check_and_install_jq() {
     if ! command -v jq &> /dev/null; then
-        echo "jq 工具未安装，正在安装..."
+        echo "jq 工具未安装，正在尝试安装..."
         if [ -x "$(command -v apt-get)" ]; then
             sudo apt-get update
             sudo apt-get install -y jq
@@ -52,11 +52,19 @@ fi
 
 # 提取 IP 地址
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
+if [ -z "$IP_ADDRESS" ]; then
+    echo "无法提取 IP 地址。"
+    exit 1
+fi
 echo "提取的 IP 地址: $IP_ADDRESS"
 
 # 获取国家代码
 echo "获取国家代码..."
 API_RESPONSE=$(curl -s "http://ip-api.com/json/$IP_ADDRESS")
+if [ -z "$API_RESPONSE" ]; then
+    echo "无法从 API 获取响应。"
+    exit 1
+fi
 echo "API 响应: $API_RESPONSE"
 COUNTRY_CODE=$(echo "$API_RESPONSE" | jq -r '.countryCode')
 
