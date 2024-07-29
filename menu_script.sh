@@ -54,7 +54,7 @@ function execute_option() {
             ;;
         8)
             echo "安装和配置 Lsky Pro..."
-            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_and_configure_lsky_pro.sh | sudo bash || { echo "安装和配置 Lsky Pro 失败"; exit 1; }
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_and_configure_lsky_pro.sh -o install_and_configure_lsky_pro.sh && sudo chmod +x install_and_configure_lsky_pro.sh && sudo ./install_and_configure_lsky_pro.sh && sudo rm -rf install_and_configure_lsky_pro.sh  || { echo "安装和配置 Lsky Pro 失败"; exit 1; }
             ;;
         9)
             echo "安装极光面板（Jiguang）..."
