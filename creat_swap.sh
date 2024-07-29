@@ -1,103 +1,136 @@
 #!/bin/bash
 
-# 定义日志文件
-LOG_FILE="/var/log/enable_swap.log"
+# 获取用户输入的交换文件大小
+read -p "请输入交换文件的大小（例如 1G、512M）： " SWAPSIZE
 
-# 输出信息到终端和日志文件的函数
-log_message() {
-    echo "$1"
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | sudo tee -a "$LOG_FILE"
-}
+# 提示用户关于 swappiness 值的意义
+echo "swappiness 值决定了系统使用交换空间的积极程度。它的取值范围是 0 到 100："
+echo " - 值较低（例如 10）：系统会尽量避免使用交换空间，更多地使用物理内存。适用于内存较大、需要较少交换的场景。"
+echo " - 值较高（例如 60）：系统会较为积极地使用交换空间，适用于内存较小、需要更多交换的场景。"
+echo "请输入 swappiness 值（例如 10、60）： "
+read SWAPPINESS
 
-# 提示用户输入交换空间大小
-read -p "请输入交换空间大小（如512M或2G）： " SWAP_SIZE
+# 定义交换文件的路径
+SWAPFILE="/swapfile"
 
-# 将交换空间大小转换为字节数
-case "$SWAP_SIZE" in
-    *M)
-        SWAP_SIZE_BYTES=$(echo "${SWAP_SIZE%M} * 1024 * 1024" | bc)
-        ;;
-    *G)
-        SWAP_SIZE_BYTES=$(echo "${SWAP_SIZE%G} * 1024 * 1024 * 1024" | bc)
-        ;;
-    *)
-        log_message "不支持的交换空间单位。请使用M（兆字节）或G（吉字节）。"
-        exit 1
-        ;;
+# 检查脚本是否以 root 用户运行
+if [ "$(id -u)" -ne "0" ]; then
+  echo "请以 root 用户运行此脚本。"
+  exit 1
+fi
+
+# 计算块大小和块数
+case $SWAPSIZE in
+  *G)
+    BLOCKSIZE=1M
+    COUNT=$(echo ${SWAPSIZE%G} | awk '{print $1 * 1024}')
+    ;;
+  *M)
+    BLOCKSIZE=1M
+    COUNT=${SWAPSIZE%M}
+    ;;
+  *)
+    echo "不支持的交换文件大小格式。请使用类似 1G 或 512M 的格式。"
+    exit 1
+    ;;
 esac
 
-# 确保提供的交换空间大小是有效的
-if [ -z "$SWAP_SIZE_BYTES" ] || [ "$SWAP_SIZE_BYTES" -le 0 ]; then
-    log_message "无效的交换空间大小。"
+# 关闭并删除当前交换空间
+echo "检查并删除现有交换空间..."
+SWAP_DEVICES=$(swapon --show=NAME --noheadings)
+if [ -n "$SWAP_DEVICES" ]; then
+  echo "现有交换设备："
+  echo "$SWAP_DEVICES"
+  
+  # 关闭现有交换空间
+  for SWAP in $SWAP_DEVICES; do
+    echo "关闭交换空间 $SWAP..."
+    swapoff $SWAP
+    if [ $? -ne 0 ]; then
+      echo "关闭交换空间失败：$SWAP"
+    fi
+  done
+
+  # 从 /etc/fstab 中移除交换条目
+  grep -v "^/dev/sd" /etc/fstab > /etc/fstab.tmp
+  mv /etc/fstab.tmp /etc/fstab
+  if [ $? -ne 0 ]; then
+    echo "更新 /etc/fstab 失败。"
     exit 1
+  fi
 fi
 
-# 提示用户输入swappiness值
-read -p "请输入 swappiness 值（默认80），该值决定了系统使用交换空间的倾向：0 表示不使用交换，100 表示频繁使用交换空间。默认值为80： " SWAPPINESS
-
-# 使用默认值如果用户没有输入
-SWAPPINESS=${SWAPPINESS:-80}
-
-# 验证 swappiness 是否是有效的整数
-if ! [[ "$SWAPPINESS" =~ ^[0-9]+$ ]] || [ "$SWAPPINESS" -lt 0 ] || [ "$SWAPPINESS" -gt 100 ]; then
-    log_message "无效的 swappiness 值。请输入0到100之间的整数。"
+# 删除旧的交换文件（如果存在）
+if [ -f "$SWAPFILE" ]; then
+  echo "删除旧的交换文件 $SWAPFILE..."
+  rm -f $SWAPFILE
+  if [ $? -ne 0 ]; then
+    echo "删除交换文件失败。"
     exit 1
+  fi
 fi
 
-# 检查现有的交换分区并删除
-log_message "检查现有的交换分区..."
-EXISTING_SWAP=$(sudo swapon --show=NAME | grep -w '/swapfile')
-if [ -n "$EXISTING_SWAP" ]; then
-    log_message "发现现有的交换分区，正在禁用和删除..."
-    sudo swapoff /swapfile
-    sudo rm /swapfile
-else
-    log_message "没有发现现有的交换分区。"
-fi
-
-# 创建交换文件
-log_message "创建交换文件..."
-sudo fallocate -l "$SWAP_SIZE" /swapfile
-
-# 如果 fallocate 不可用，使用 dd 创建交换文件
-if [ ! -f /swapfile ]; then
-    log_message "fallocate 命令不可用，使用 dd 创建交换文件..."
-    sudo dd if=/dev/zero of=/swapfile bs=1M count=$((SWAP_SIZE_BYTES / 1024 / 1024)) status=progress
+# 创建新的交换文件
+echo "创建交换文件..."
+dd if=/dev/zero of=$SWAPFILE bs=$BLOCKSIZE count=$COUNT status=progress
+if [ $? -ne 0 ]; then
+  echo "创建交换文件失败。"
+  exit 1
 fi
 
 # 设置交换文件权限
-log_message "设置交换文件权限..."
-sudo chmod 600 /swapfile
-
-# 确保权限设置成功
-if [ "$(stat -c %a /swapfile)" -ne 600 ]; then
-    log_message "权限设置失败，请检查 /swapfile 的权限。"
-    exit 1
+chmod 600 $SWAPFILE
+if [ $? -ne 0 ]; then
+  echo "设置交换文件权限失败。"
+  exit 1
 fi
 
-# 设置交换空间
-log_message "设置交换空间..."
-sudo mkswap /swapfile
+# 将文件设置为交换区域
+mkswap $SWAPFILE
+if [ $? -ne 0 ]; then
+  echo "设置交换区域失败。"
+  exit 1
+fi
 
-# 启用交换空间
-log_message "启用交换空间..."
-sudo swapon /swapfile
+# 启用交换文件
+swapon $SWAPFILE
+if [ $? -ne 0 ]; then
+  echo "启用交换文件失败。"
+  exit 1
+fi
 
-# 验证交换空间
-log_message "验证交换空间..."
-free -h
-
-# 添加到 /etc/fstab 以便系统重启时自动启用
-log_message "更新 /etc/fstab 文件..."
-if ! grep -q '/swapfile' /etc/fstab; then
-    echo "/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab
-else
-    log_message "/swapfile 已经在 /etc/fstab 中"
+# 更新 /etc/fstab 文件
+grep -q "^$SWAPFILE " /etc/fstab
+if [ $? -ne 0 ]; then
+  echo "$SWAPFILE none swap sw 0 0" >> /etc/fstab
+  if [ $? -ne 0 ]; then
+    echo "更新 /etc/fstab 失败。"
+    exit 1
+  fi
 fi
 
 # 设置 swappiness 值
-log_message "设置 swappiness 值为 ${SWAPPINESS}..."
-sudo sysctl vm.swappiness=${SWAPPINESS}
-echo "vm.swappiness=${SWAPPINESS}" | sudo tee -a /etc/sysctl.conf
+echo "设置 swappiness 值为 $SWAPPINESS..."
+sysctl vm.swappiness=$SWAPPINESS
+if [ $? -ne 0 ]; then
+  echo "设置 swappiness 值失败。"
+  exit 1
+fi
 
-log_message "交换空间配置完成。"
+# 永久设置 swappiness 值
+grep -q "^vm.swappiness=" /etc/sysctl.conf
+if [ $? -ne 0 ]; then
+  echo "vm.swappiness=$SWAPPINESS" >> /etc/sysctl.conf
+  if [ $? -ne 0 ]; then
+    echo "更新 /etc/sysctl.conf 失败。"
+    exit 1
+  fi
+fi
+
+# 显示当前交换空间和 swappiness 值
+echo "交换文件创建并启用成功。当前交换空间："
+swapon --show
+echo "当前 swappiness 值："
+sysctl vm.swappiness
+
+exit 0
