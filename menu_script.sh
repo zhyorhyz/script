@@ -79,10 +79,11 @@ function execute_option() {
 }
 
 # 主程序
-clear
-show_help
-
 while true; do
+    clear
+    show_help
     read -p "请选择一个选项: " option
     execute_option "$option"
+    echo "按任意键继续..."
+    read -n 1
 done
