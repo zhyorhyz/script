@@ -7,8 +7,13 @@ read -p "请输入交换文件的大小（例如 1G、512M）： " SWAPSIZE
 echo "swappiness 值决定了系统使用交换空间的积极程度。它的取值范围是 0 到 100："
 echo " - 值较低（例如 10）：系统会尽量避免使用交换空间，更多地使用物理内存。适用于内存较大、需要较少交换的场景。"
 echo " - 值较高（例如 60）：系统会较为积极地使用交换空间，适用于内存较小、需要更多交换的场景。"
-echo "请输入 swappiness 值（例如 10、60）： "
+echo "请输入 swappiness 值（例如 10、60），或直接按 Enter 以使用默认值 80： "
 read SWAPPINESS
+
+# 如果用户没有输入 swappiness 值，则使用默认值 80
+if [ -z "$SWAPPINESS" ]; then
+  SWAPPINESS=80
+fi
 
 # 定义交换文件的路径
 SWAPFILE="/swapfile"
@@ -34,31 +39,6 @@ case $SWAPSIZE in
     exit 1
     ;;
 esac
-
-# 关闭并删除当前交换空间
-echo "检查并删除现有交换空间..."
-SWAP_DEVICES=$(swapon --show=NAME --noheadings)
-if [ -n "$SWAP_DEVICES" ]; then
-  echo "现有交换设备："
-  echo "$SWAP_DEVICES"
-  
-  # 关闭现有交换空间
-  for SWAP in $SWAP_DEVICES; do
-    echo "关闭交换空间 $SWAP..."
-    swapoff $SWAP
-    if [ $? -ne 0 ]; then
-      echo "关闭交换空间失败：$SWAP"
-    fi
-  done
-
-  # 从 /etc/fstab 中移除交换条目
-  grep -v "^/dev/sd" /etc/fstab > /etc/fstab.tmp
-  mv /etc/fstab.tmp /etc/fstab
-  if [ $? -ne 0 ]; then
-    echo "更新 /etc/fstab 失败。"
-    exit 1
-  fi
-fi
 
 # 删除旧的交换文件（如果存在）
 if [ -f "$SWAPFILE" ]; then
@@ -100,8 +80,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # 更新 /etc/fstab 文件
-grep -q "^$SWAPFILE " /etc/fstab
-if [ $? -ne 0 ]; then
+if ! grep -q "^$SWAPFILE " /etc/fstab; then
   echo "$SWAPFILE none swap sw 0 0" >> /etc/fstab
   if [ $? -ne 0 ]; then
     echo "更新 /etc/fstab 失败。"
@@ -118,8 +97,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # 永久设置 swappiness 值
-grep -q "^vm.swappiness=" /etc/sysctl.conf
-if [ $? -ne 0 ]; then
+if ! grep -q "^vm.swappiness=" /etc/sysctl.conf; then
   echo "vm.swappiness=$SWAPPINESS" >> /etc/sysctl.conf
   if [ $? -ne 0 ]; then
     echo "更新 /etc/sysctl.conf 失败。"
