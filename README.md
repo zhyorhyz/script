@@ -48,5 +48,5 @@ bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/zhyor
 ```
 # x-ui-Non-original
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/FranzKafkaYu/x-ui/master/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/zhyorhyz/x-ui-non-original/main/install.sh)
 ```

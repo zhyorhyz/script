@@ -71,7 +71,7 @@ function execute_option() {
             ;;
         11)
             echo "安装 x-ui-非原版..."
-            bash <(curl -Ls https://raw.githubusercontent.com/FranzKafkaYu/x-ui/master/install.sh)
+            bash <(curl -Ls https://raw.githubusercontent.com/zhyorhyz/x-ui-non-original/main/install.sh)
             ;;       
         0)
             echo "退出"
