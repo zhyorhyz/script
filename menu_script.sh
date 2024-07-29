@@ -81,7 +81,7 @@ function execute_option() {
             echo "dd debian11"
             bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/zhyorhyz/dd/master/InstallNET.sh') -d 11 -v 64 -p "12345zxc" -port "22" || { echo "dd失败"; exit 1; }
             ;;
-        11)
+        12)
             echo "安装 x-ui-非原版..."
             bash <(curl -Ls https://raw.githubusercontent.com/zhyorhyz/x-ui-non-original/main/install.sh)
             ;;       
