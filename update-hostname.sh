@@ -2,24 +2,35 @@
 
 set -e  # 确保脚本在遇到错误时停止执行
 
-# 检查并安装 jq
+# 确保已经安装 jq
 if ! command -v jq &> /dev/null; then
     echo "jq 工具未安装，正在安装..."
     sudo apt-get update
     sudo apt-get install -y jq
 fi
 
-# 获取公网 IP 地址
-IP_ADDRESS=$(curl -s https://api.ipify.org)
+# 显示帮助信息
+function show_help() {
+    echo "用法: $0 [选项]"
+    echo
+    echo "选项:"
+    echo "  -h, --help         显示此帮助信息"
+}
 
-# 使用 ipinfo.io API 获取 IP 地址的归属地
-LOCATION=$(curl -s https://ipinfo.io/${IP_ADDRESS}/json)
+# 解析命令行选项
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -h|--help) show_help; exit 0 ;;
+        *) echo "未知选项: $1"; show_help; exit 1 ;;
+    esac
+    shift
+done
 
-# 提取国家信息
-COUNTRY=$(echo "$LOCATION" | jq -r '.country')
+# 获取 IP 地址（假设是外部 IP 地址）
+IP_ADDRESS="127.0.0.1"
 
-# 提示用户输入制造商名称
-read -p "请输入制造商名称（例如 'ExampleVendor'）： " VENDOR
+# 询问用户输入制造商名称
+read -p "请输入制造商名称（例如 ExampleCorp）： " MANUFACTURER
 
 # 检查用户是否输入了制造商名称
 if [ -z "$VENDOR" ]; then
