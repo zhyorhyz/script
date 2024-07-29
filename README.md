@@ -30,3 +30,7 @@ curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_nginx_
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/install_and_configure_lsky_pro.sh | sudo bash
 ```
+# jiguang
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/Aurora-Admin-Panel/deploy/main/install.sh)
+```
