@@ -65,12 +65,37 @@ if [ -z "$API_RESPONSE" ]; then
     echo "无法从 API 获取响应。"
     exit 1
 fi
-echo "API 响应: $API_RESPONSE"
 COUNTRY_CODE=$(echo "$API_RESPONSE" | jq -r '.countryCode')
 
 if [ -z "$COUNTRY_CODE" ] || [ "$COUNTRY_CODE" == "null" ]; then
     echo "无法提取国家代码。"
-    exit 1
+
+    # 请求用户手动输入 IP 地址或国家代码
+    while true; do
+        read -p "请输入国家代码（例如 US）或 IP 地址以重试获取国家代码： " USER_INPUT
+
+        if [[ "$USER_INPUT" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            # 如果输入是 IP 地址，重新获取国家代码
+            IP_ADDRESS=$USER_INPUT
+            API_RESPONSE=$(curl -s "http://ip-api.com/json/$IP_ADDRESS")
+            if [ -z "$API_RESPONSE" ]; then
+                echo "无法从 API 获取响应。"
+                continue
+            fi
+            COUNTRY_CODE=$(echo "$API_RESPONSE" | jq -r '.countryCode')
+            if [ -n "$COUNTRY_CODE" ] && [ "$COUNTRY_CODE" != "null" ]; then
+                break
+            else
+                echo "无法提取国家代码。请重新输入 IP 地址或国家代码。"
+            fi
+        elif [[ "$USER_INPUT" =~ ^[A-Z]{2}$ ]]; then
+            # 如果输入是国家代码，直接使用
+            COUNTRY_CODE=$USER_INPUT
+            break
+        else
+            echo "输入无效。请提供有效的 IP 地址或国家代码。"
+        fi
+    done
 fi
 
 # 生成新的主机名
@@ -89,7 +114,9 @@ if ! grep -q "127.0.0.1[[:space:]]localhost" /etc/hosts; then
 fi
 
 # 确保主机名条目存在
-if ! grep -q "127.0.0.1[[:space:]]$NEW_HOSTNAME" /etc/hosts; then
+if grep -q "127.0.0.1[[:space:]]$NEW_HOSTNAME" /etc/hosts; then
+    echo "主机名条目已存在，不需要更新。"
+else
     sudo sed -i "/^127.0.0.1[[:space:]].*/d" /etc/hosts
     echo "127.0.0.1    $NEW_HOSTNAME" | sudo tee -a /etc/hosts > /dev/null
 fi
