@@ -16,7 +16,6 @@ mkdir -p "$DATA_DIR"
 
 # 创建 docker-compose.yml 文件
 cat > "$COMPOSE_FILE" <<EOF
-version: '3'
 services:
   uptime-kuma:
     image: louislam/uptime-kuma
