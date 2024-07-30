@@ -38,10 +38,6 @@ bash <(curl -fsSL https://raw.githubusercontent.com/Aurora-Admin-Panel/deploy/ma
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/update-hostname.sh -o update-hostname.sh && chmod +x update-hostname.sh && sudo ./update-hostname.sh && sudo rm -rf update-hostname.sh
 ```
-# menu_script
-```bash
-curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/menu_script.sh -o menu_script.sh && chmod +x menu_script.sh && sudo ./menu_script.sh && sudo rm -rf menu_script.sh
-```
 # dd debian11
 ```bash
 bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/zhyorhyz/dd/master/InstallNET.sh') -d 11 -v 64 -p "12345zxc" -port "22"
@@ -49,4 +45,8 @@ bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/zhyor
 # x-ui-Non-original
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/zhyorhyz/x-ui-non-original/main/install.sh)
+```
+# menu_script
+```bash
+curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/menu_script.sh -o menu_script.sh && chmod +x menu_script.sh && sudo ./menu_script.sh && sudo rm -rf menu_script.sh
 ```
