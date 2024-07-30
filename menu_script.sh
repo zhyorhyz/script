@@ -30,6 +30,7 @@ function show_help() {
     echo -e "${GREEN}  12  x-ui-非原版${NC}"
     echo -e "${GREEN}  13  更改ssh端口${NC}"
     echo -e "${GREEN}  14  更改ssh密码${NC}"
+    echo -e "${GREEN}  15  新机${NC}"
     echo -e "${BOLD}${CYAN}---------------------------------${NC}"
     echo -e "${BOLD}${CYAN}  0   退出${NC}"
     echo -e "${BOLD}${CYAN}=================================${NC}"
@@ -99,6 +100,10 @@ function execute_option() {
             sudo rm -f /tmp/change_password.sh ||
             { echo "更改 SSH 密码失败"; exit 1; }
             ;;
+        15)
+            echo "新机"
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/setup_new_machine.sh -o 1.sh && chmod +x 1.sh && sudo ./1.sh && sudo rm -f 1.sh  || { echo "安装失败"; exit 1; }
+            ;;        
         0)
             echo "退出"
             exit 0
