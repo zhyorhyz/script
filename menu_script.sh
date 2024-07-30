@@ -29,6 +29,7 @@ function show_help() {
     echo -e "${GREEN}  11  dd debian11${NC}"
     echo -e "${GREEN}  12  x-ui-非原版${NC}"
     echo -e "${GREEN}  13  更改ssh端口${NC}"
+    echo -e "${GREEN}  14  更改ssh密码${NC}"
     echo -e "${BOLD}${CYAN}---------------------------------${NC}"
     echo -e "${BOLD}${CYAN}  0   退出${NC}"
     echo -e "${BOLD}${CYAN}=================================${NC}"
@@ -89,7 +90,15 @@ function execute_option() {
         13)
             echo "更改 ssh 端口..."
             curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/change_ssh_port.sh -o 1.sh && chmod +x 1.sh && sudo ./1.sh && sudo rm -f 1.sh || { echo "更改ssh端口失败"; exit 1; }
-            ;;  
+            ;;
+        14)
+            echo "更改 SSH 密码..."
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/change_password.sh -o /tmp/change_password.sh &&
+            chmod +x /tmp/change_password.sh &&
+            sudo /tmp/change_password.sh &&
+            sudo rm -f /tmp/change_password.sh ||
+            { echo "更改 SSH 密码失败"; exit 1; }
+            ;;
         0)
             echo "退出"
             exit 0
