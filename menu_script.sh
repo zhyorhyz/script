@@ -28,6 +28,7 @@ function show_help() {
     echo -e "${GREEN}  10  更新主机名${NC}"
     echo -e "${GREEN}  11  dd debian11${NC}"
     echo -e "${GREEN}  12  x-ui-非原版${NC}"
+    echo -e "${GREEN}  13  更改ssh端口${NC}"
     echo -e "${BOLD}${CYAN}---------------------------------${NC}"
     echo -e "${BOLD}${CYAN}  0   退出${NC}"
     echo -e "${BOLD}${CYAN}=================================${NC}"
@@ -79,12 +80,16 @@ function execute_option() {
             ;;
         11)
             echo "dd debian11"
-            bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/zhyorhyz/dd/master/InstallNET.sh') -d 11 -v 64 -p "12345zxc" -port "22" || { echo "dd失败"; exit 1; }
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/dd_debian11.sh -o dd_debian11.sh && chmod +x dd_debian11.sh && sudo ./dd_debian11.sh && sudo rm -f dd_debian11.sh
             ;;
         12)
             echo "安装 x-ui-非原版..."
             bash <(curl -Ls https://raw.githubusercontent.com/zhyorhyz/x-ui-non-original/main/install.sh)
-            ;;       
+            ;;      
+        13)
+            echo "更改 ssh 端口..."
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/change_ssh_port.sh -o 1.sh && chmod +x 1.sh && sudo ./1.sh && sudo rm -f 1.sh || { echo "更新主机名失败"; exit 1; }
+            ;;  
         0)
             echo "退出"
             exit 0
