@@ -4,37 +4,53 @@ set -e  # 确保脚本在遇到错误时停止执行
 
 # 显示帮助信息
 function show_help() {
-    GREEN='\033[0;32m'
-    CYAN='\033[0;36m'
+    LIGHT_GREEN='\033[1;32m'
+    CYAN='\033[1;36m'
     BOLD='\033[1m'
     UNDERLINE='\033[4m'
     NC='\033[0m' # No Color
 
     echo -e "${BOLD}${CYAN}=================================${NC}"
-    echo -e "${BOLD}${CYAN} 用法: ${NC}${GREEN}$0 [选项]${NC}"
+    echo -e "${BOLD}${CYAN} 用法: ${NC}${LIGHT_GREEN}$0 [选项]${NC}"
     echo -e "${BOLD}${CYAN}=================================${NC}"
     echo
     echo -e "${BOLD}${CYAN}选项:${NC}"
     echo -e "${BOLD}${CYAN}---------------------------------${NC}"
-    echo -e "${GREEN}  1   启用 BBR${NC}"
-    echo -e "${GREEN}  2   以交换文件的方式创建交换空间${NC}"
-    echo -e "${GREEN}  3   安装 Nezha${NC}"
-    echo -e "${GREEN}  4   启用 Bash 自动补全${NC}"
-    echo -e "${GREEN}  5   下载并安装 Docker Compose${NC}"
-    echo -e "${GREEN}  6   安装和配置 Docker${NC}"
-    echo -e "${GREEN}  7   安装 Nginx Proxy Manager${NC}"
-    echo -e "${GREEN}  8   安装和配置 Lsky Pro${NC}"
-    echo -e "${GREEN}  9   安装极光面板（Jiguang）${NC}"
-    echo -e "${GREEN}  10  更新主机名${NC}"
-    echo -e "${GREEN}  11  dd debian11${NC}"
-    echo -e "${GREEN}  12  x-ui-非原版${NC}"
-    echo -e "${GREEN}  13  更改ssh端口${NC}"
-    echo -e "${GREEN}  14  更改ssh密码${NC}"
-    echo -e "${GREEN}  15  新机${NC}"
+    echo -e "${LIGHT_GREEN}  1   启用 BBR${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  2   以交换文件的方式创建交换空间${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  3   安装 Nezha${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  4   启用 Bash 自动补全${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  5   下载并安装 Docker Compose${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  6   安装和配置 Docker${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  7   安装 Nginx Proxy Manager${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  8   安装和配置 Lsky Pro${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  9   安装极光面板（Jiguang）${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  10  更新主机名${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  11  dd debian11${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  12  x-ui-非原版${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  13  更改ssh端口${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  14  更改ssh密码${NC}"
+    echo
+    echo -e "${LIGHT_GREEN}  15  新机${NC}"
+    echo
     echo -e "${BOLD}${CYAN}---------------------------------${NC}"
     echo -e "${BOLD}${CYAN}  0   退出${NC}"
     echo -e "${BOLD}${CYAN}=================================${NC}"
 }
+
 
 
 # 执行选择的操作
