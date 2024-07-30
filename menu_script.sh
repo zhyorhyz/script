@@ -88,7 +88,7 @@ function execute_option() {
             ;;      
         13)
             echo "更改 ssh 端口..."
-            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/change_ssh_port.sh -o 1.sh && chmod +x 1.sh && sudo ./1.sh && sudo rm -f 1.sh || { echo "更新主机名失败"; exit 1; }
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/change_ssh_port.sh -o 1.sh && chmod +x 1.sh && sudo ./1.sh && sudo rm -f 1.sh || { echo "更改ssh端口失败"; exit 1; }
             ;;  
         0)
             echo "退出"
