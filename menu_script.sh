@@ -44,7 +44,7 @@ function show_help() {
     echo
     echo -e "${LIGHT_GREEN}  14  更改ssh密码${NC}"
     echo
-    echo -e "${LIGHT_GREEN}  15  新机${NC}"
+    echo -e "${LIGHT_GREEN}  15  安装 uptime_kuma${NC}"
     echo
     echo -e "${BOLD}${CYAN}---------------------------------${NC}"
     echo -e "${BOLD}${CYAN}  0   退出${NC}"
@@ -117,8 +117,8 @@ function execute_option() {
             { echo "更改 SSH 密码失败"; exit 1; }
             ;;
         15)
-            echo "新机"
-            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/setup_new_machine.sh -o 1.sh && chmod +x 1.sh && sudo ./1.sh && sudo rm -f 1.sh  || { echo "安装失败"; exit 1; }
+            echo "安装 uptime_kuma"
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/setup_uptime_kuma.sh -o 1.sh && chmod +x 1.sh && ./1.sh && rm -f 1.sh  || { echo "安装失败"; exit 1; }
             ;;        
         0)
             echo "退出"
