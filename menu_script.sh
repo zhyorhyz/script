@@ -48,6 +48,8 @@ function show_help() {
     echo
     echo -e "${LIGHT_GREEN}  16  安装 flare${NC}"
     echo
+    echo -e "${LIGHT_GREEN}  17  安装 cryptgeon${NC}"
+    echo
     echo -e "${BOLD}${CYAN}---------------------------------${NC}"
     echo -e "${BOLD}${CYAN}  0   退出${NC}"
     echo -e "${BOLD}${CYAN}=================================${NC}"
@@ -126,7 +128,7 @@ function execute_option() {
             echo "安装 flare"
             curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/setup_flare.sh -o 1.sh && chmod +x 1.sh && ./1.sh && rm -f 1.sh  || { echo "安装失败"; exit 1; }
             ;;  
-        16)
+        17)
             echo "安装 flare"
             curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/ssetup_cryptgeon.sh -o 1.sh && chmod +x 1.sh && ./1.sh && rm -f 1.sh  || { echo "安装失败"; exit 1; }
             ;;       
