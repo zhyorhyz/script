@@ -130,7 +130,7 @@ function execute_option() {
             ;;  
         17)
             echo "安装 flare"
-            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/ssetup_cryptgeon.sh -o 1.sh && chmod +x 1.sh && ./1.sh && rm -f 1.sh  || { echo "安装失败"; exit 1; }
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/setup_cryptgeon.sh -o 1.sh && chmod +x 1.sh && ./1.sh && rm -f 1.sh  || { echo "安装失败"; exit 1; }
             ;;       
         0)
             echo "退出"
