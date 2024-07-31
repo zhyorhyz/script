@@ -20,7 +20,6 @@ cd /root/data/docker_data/Flare
 
 # 创建 docker-compose.yml 文件
 cat <<EOL > docker-compose.yml
-version: '3'
 services:
   flare:
     image: soulteary/flare
