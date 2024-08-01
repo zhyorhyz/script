@@ -48,5 +48,5 @@ bash <(curl -Ls https://raw.githubusercontent.com/zhyorhyz/x-ui-non-original/mai
 ```
 # menu_script
 ```bash
-apt-get update --allow-releaseinfo-change && apt install curl sudo wget parted -y && curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/menu_script.sh -o menu_script.sh && chmod +x menu_script.sh && ./menu_script.sh && rm -rf menu_script.sh
+systemctl restart systemd-resolved&&apt-get update --allow-releaseinfo-change && apt install curl sudo wget parted -y && curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/menu_script.sh -o menu_script.sh && chmod +x menu_script.sh && ./menu_script.sh && rm -rf menu_script.sh
 ```
