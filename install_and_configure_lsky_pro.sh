@@ -57,6 +57,10 @@ if ! [[ "$PORT" =~ ^[0-9]+$ ]] || [ "$PORT" -lt 1 ] || [ "$PORT" -gt 65535 ]; th
     exit 1
 fi
 
+# 询问用户输入 MySQL 数据库密码
+read -s -p "请输入 MySQL 数据库 root 用户的密码: " MYSQL_ROOT_PASSWORD
+echo  # 输出换行符以确保提示符后的密码不在同一行
+
 # 创建 docker-compose.yml 文件
 echo "创建 docker-compose.yml 文件..."
 cat > docker-compose.yml <<EOF
@@ -71,27 +75,23 @@ services:
     volumes:
       - $PWD/web:/var/www/html/
     ports:
-      - "9080:8089"
+      - "${PORT}:8089"
     networks:
       - lsky-net
 
-  # 注：arm64的无法使用该镜像，请选择sqlite或自建数据库
   mysql-lsky:
     image: mysql:5.7.22
     restart: unless-stopped
-    # 主机名，可作为"数据库连接地址"
     hostname: mysql-lsky
-    # 容器名称
     container_name: mysql-lsky
-    # 修改加密规则
     command: --default-authentication-plugin=mysql_native_password
     volumes:
       - $PWD/mysql/data:/var/lib/mysql
       - $PWD/mysql/conf:/etc/mysql
       - $PWD/mysql/log:/var/log/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: lAsWjb6rzSzENUYg # 数据库root用户密码，自行修改
-      MYSQL_DATABASE: lsky-data # 可作为"数据库名称/路径"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # 数据库 root 用户密码
+      MYSQL_DATABASE: lsky-data  # 可作为"数据库名称/路径"
     networks:
       - lsky-net
 
