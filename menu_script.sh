@@ -32,7 +32,7 @@ function show_help() {
     echo
     echo -e "${LIGHT_GREEN}  8   安装和配置 Lsky Pro${NC}"
     echo
-    echo -e "${LIGHT_GREEN}  9   安装极光面板（Jiguang）${NC}"
+    echo -e "${LIGHT_GREEN}  9   安装极光面板${NC}"
     echo
     echo -e "${LIGHT_GREEN}  10  更新主机名${NC}"
     echo
