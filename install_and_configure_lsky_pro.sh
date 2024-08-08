@@ -61,31 +61,42 @@ fi
 echo "创建 docker-compose.yml 文件..."
 cat > docker-compose.yml <<EOF
 services:
-    lsky-pro:
-        container_name: lsky-pro
-        image: dko0/lsky-pro
-        restart: always
-        volumes:
-            - /root/data/docker_data/lsky-pro/lsky-pro-data:/var/www/html  # 映射到本地
-        ports:
-            - ${PORT}:80  # 用户指定的管理界面端口
-        environment:
-            - MYSQL_HOST=mysql
-            - MYSQL_DATABASE=lsky-pro
-            - MYSQL_USER=lsky-pro
-            - MYSQL_PASSWORD=lsky-pro
+  lskypro:
+    image: halcyonazure/lsky-pro-docker:latest
+    restart: unless-stopped
+    hostname: lskypro
+    container_name: lskypro
+    environment:
+      - WEB_PORT=8089
+    volumes:
+      - $PWD/web:/var/www/html/
+    ports:
+      - "9080:8089"
+    networks:
+      - lsky-net
 
-    mysql:
-        image: mysql:8.0
-        container_name: lsky-pro-db
-        restart: always
-        environment:
-          - MYSQL_DATABASE=lsky-pro
-          - MYSQL_USER=lsky-pro
-          - MYSQL_PASSWORD=lsky-pro
-          - MYSQL_ROOT_PASSWORD=lsky-pro
-        volumes:
-          - /root/data/docker_data/lsky-pro/db:/var/lib/mysql
+  # 注：arm64的无法使用该镜像，请选择sqlite或自建数据库
+  mysql-lsky:
+    image: mysql:5.7.22
+    restart: unless-stopped
+    # 主机名，可作为"数据库连接地址"
+    hostname: mysql-lsky
+    # 容器名称
+    container_name: mysql-lsky
+    # 修改加密规则
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - $PWD/mysql/data:/var/lib/mysql
+      - $PWD/mysql/conf:/etc/mysql
+      - $PWD/mysql/log:/var/log/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: lAsWjb6rzSzENUYg # 数据库root用户密码，自行修改
+      MYSQL_DATABASE: lsky-data # 可作为"数据库名称/路径"
+    networks:
+      - lsky-net
+
+networks:
+  lsky-net: {}
 EOF
 
 # 启动 Lsky Pro 和 MySQL 服务
