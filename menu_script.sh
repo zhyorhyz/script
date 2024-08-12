@@ -5,39 +5,43 @@ set -e  # 确保脚本在遇到错误时停止执行
 # 显示帮助信息
 function show_help() {
     LIGHT_GREEN='\033[1;32m'
-    WHITE_BOLD='\033[1;37m'
+    WHITE='\033[0;37m'
+    CYAN='\033[1;36m'
     BOLD='\033[1m'
+    UNDERLINE='\033[4m'
     NC='\033[0m' # No Color
 
-    echo -e "${BOLD}${WHITE_BOLD}=================================${NC}"
-    echo -e "${BOLD}${WHITE_BOLD} 用法: ${NC}${LIGHT_GREEN}$0 [选项]${NC}"
-    echo -e "${BOLD}${WHITE_BOLD}=================================${NC}"
+    echo -e "${BOLD}${CYAN}=================================${NC}"
+    echo -e "${BOLD}${CYAN} 用法: ${NC}${LIGHT_GREEN}$0 [选项]${NC}"
+    echo -e "${BOLD}${CYAN}=================================${NC}"
     echo
-    echo -e "${BOLD}${WHITE_BOLD}选项:${NC}"
-    echo -e "${BOLD}${WHITE_BOLD}---------------------------------${NC}"
+    echo -e "${BOLD}${CYAN}选项:${NC}"
+    echo -e "${BOLD}${CYAN}---------------------------------${NC}"
 
-    echo -e "${LIGHT_GREEN}  1 ${NC} ${WHITE_BOLD}启用 BBR${NC}"
-    echo -e "${LIGHT_GREEN}  2 ${NC} ${WHITE_BOLD}以交换文件的方式创建交换空间${NC}"
-    echo -e "${LIGHT_GREEN}  3 ${NC} ${WHITE_BOLD}安装 Nezha${NC}"
-    echo -e "${LIGHT_GREEN}  4 ${NC} ${WHITE_BOLD}启用 Bash 自动补全${NC}"
-    echo -e "${LIGHT_GREEN}  5 ${NC} ${WHITE_BOLD}下载并安装 Docker Compose${NC}"
-    echo -e "${LIGHT_GREEN}  6 ${NC} ${WHITE_BOLD}安装和配置 Docker${NC}"
-    echo -e "${LIGHT_GREEN}  7 ${NC} ${WHITE_BOLD}安装 Nginx Proxy Manager${NC}"
-    echo -e "${LIGHT_GREEN}  8 ${NC} ${WHITE_BOLD}安装和配置 Lsky Pro${NC}"
-    echo -e "${LIGHT_GREEN}  9 ${NC} ${WHITE_BOLD}安装极光面板${NC}"
-    echo -e "${LIGHT_GREEN} 10 ${NC} ${WHITE_BOLD}更新主机名${NC}"
-    echo -e "${LIGHT_GREEN} 11 ${NC} ${WHITE_BOLD}dd debian11${NC}"
-    echo -e "${LIGHT_GREEN} 12 ${NC} ${WHITE_BOLD}x-ui-非原版${NC}"
-    echo -e "${LIGHT_GREEN} 13 ${NC} ${WHITE_BOLD}更改ssh端口${NC}"
-    echo -e "${LIGHT_GREEN} 14 ${NC} ${WHITE_BOLD}更改ssh密码${NC}"
-    echo -e "${LIGHT_GREEN} 15 ${NC} ${WHITE_BOLD}安装 uptime_kuma${NC}"
-    echo -e "${LIGHT_GREEN} 16 ${NC} ${WHITE_BOLD}安装 memos${NC}"
-    echo -e "${LIGHT_GREEN} 17 ${NC} ${WHITE_BOLD}安装 v2bx 修改版${NC}"
+    echo -e "${LIGHT_GREEN}  1 ${NC} 启用 BBR"
+    echo -e "${LIGHT_GREEN}  2 ${NC} 以交换文件的方式创建交换空间"
+    echo -e "${LIGHT_GREEN}  3 ${NC} 安装 Nezha"
+    echo -e "${LIGHT_GREEN}  4 ${NC} 启用 Bash 自动补全"
+    echo -e "${LIGHT_GREEN}  5 ${NC} 下载并安装 Docker Compose"
+    echo -e "${LIGHT_GREEN}  6 ${NC} 安装和配置 Docker"
+    echo -e "${LIGHT_GREEN}  7 ${NC} 安装 Nginx Proxy Manager"
+    echo -e "${LIGHT_GREEN}  8 ${NC} 安装和配置 Lsky Pro"
+    echo -e "${LIGHT_GREEN}  9 ${NC} 安装极光面板"
+    echo -e "${LIGHT_GREEN}  10${NC} 更新主机名"
+    echo -e "${LIGHT_GREEN}  11${NC} dd debian11"
+    echo -e "${LIGHT_GREEN}  12${NC} x-ui-非原版"
+    echo -e "${LIGHT_GREEN}  13${NC} 更改ssh端口"
+    echo -e "${LIGHT_GREEN}  14${NC} 更改ssh密码"
+    echo -e "${LIGHT_GREEN}  15${NC} 安装 uptime_kuma"
+    echo -e "${LIGHT_GREEN}  16${NC} 安装 memos"
+    echo -e "${LIGHT_GREEN}  17${NC} 安装 v2bx 修改版"
+
     echo
-    echo -e "${BOLD}${WHITE_BOLD}---------------------------------${NC}"
-    echo -e "${BOLD}${WHITE_BOLD}  0 ${NC} ${WHITE_BOLD}退出${NC}"
-    echo -e "${BOLD}${WHITE_BOLD}=================================${NC}"
+    echo -e "${BOLD}${CYAN}---------------------------------${NC}"
+    echo -e "${BOLD}${CYAN}  0 ${NC} 退出"
+    echo -e "${BOLD}${CYAN}=================================${NC}"
 }
+
 
 
 # 执行选择的操作
