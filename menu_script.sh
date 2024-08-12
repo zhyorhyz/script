@@ -35,6 +35,7 @@ function show_help() {
     echo -e "${LIGHT_GREEN}  15${NC} 安装 uptime_kuma"
     echo -e "${LIGHT_GREEN}  16${NC} 安装 memos"
     echo -e "${LIGHT_GREEN}  17${NC} 安装 v2bx 修改版"
+    echo -e "${LIGHT_GREEN}  18${NC} speedtest"
 
     echo
     echo -e "${BOLD}${CYAN}---------------------------------${NC}"
@@ -119,7 +120,11 @@ function execute_option() {
             echo "安装 v2bx 修改版"
             echo "安装 v2bx 修改版成功后，输入 v2bx 可重新调用"
             wget -N https://raw.githubusercontent.com/wyx2685/V2bX-script/master/install.sh && bash install.sh || { echo "安装失败"; exit 1; }
-            ;;  
+            ;; 
+        18)
+            echo "speedtest"
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/speedtest.sh -o 1.sh && chmod +x 1.sh && ./1.sh && rm -f 1.sh  || { echo "安装失败"; exit 1; }
+            ;;
         0)
             echo "退出"
             exit 0
