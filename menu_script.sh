@@ -28,7 +28,7 @@ function show_help() {
     echo -e "${LIGHT_GREEN}  8 ${NC} 安装和配置 Lsky Pro"
     echo -e "${LIGHT_GREEN}  9 ${NC} 安装极光面板"
     echo -e "${LIGHT_GREEN}  10${NC} 更新主机名"
-    echo -e "${LIGHT_GREEN}  11${NC} dd debian11"
+    echo -e "${LIGHT_GREEN}  11${NC} dd"
     echo -e "${LIGHT_GREEN}  12${NC} x-ui-非原版"
     echo -e "${LIGHT_GREEN}  13${NC} 更改ssh端口"
     echo -e "${LIGHT_GREEN}  14${NC} 更改ssh密码"
@@ -89,8 +89,8 @@ function execute_option() {
             curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/update-hostname.sh -o update-hostname.sh && chmod +x update-hostname.sh && sudo ./update-hostname.sh && sudo rm -f update-hostname.sh || { echo "更新主机名失败"; exit 1; }
             ;;
         11)
-            echo "dd debian11"
-            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/dd_debian11.sh -o dd_debian11.sh && chmod +x dd_debian11.sh && sudo ./dd_debian11.sh && sudo rm -f dd_debian11.sh
+            echo "dd...感谢 bin456789 大神"
+            curl -O https://raw.githubusercontent.com/zhyorhyz/dd_reinstall/main/reinstall.sh && chmod +x reinstall.sh && ./reinstall.sh
             ;;
         12)
             echo "安装 x-ui-非原版..."
