@@ -89,8 +89,8 @@ function execute_option() {
             curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/main/update-hostname.sh -o update-hostname.sh && chmod +x update-hostname.sh && sudo ./update-hostname.sh && sudo rm -f update-hostname.sh || { echo "更新主机名失败"; exit 1; }
             ;;
         11)
-            echo "dd...感谢 bin456789 大神"
-            curl -O https://raw.githubusercontent.com/zhyorhyz/dd_reinstall/main/reinstall.sh && chmod +x reinstall.sh && ./reinstall.sh
+            echo "dd..."
+            wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/zhyorhyz/dd-Tools/master/Linux_reinstall/InstallNET.sh' && chmod a+x InstallNET.sh
             ;;
         12)
             echo "安装 x-ui-非原版..."
