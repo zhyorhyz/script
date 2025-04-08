@@ -90,9 +90,7 @@ function execute_option() {
             ;;
         11)
             echo "dd..."
-            wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/zhyorhyz/dd-Tools/master/Linux_reinstall/InstallNET.sh' && chmod a+x InstallNET.sh
-            ;;
-        12)
+            curl -fsSL https://raw.githubusercontent.com/zhyorhyz/script/refs/heads/main/dd_debian11.sh -o dd_debian11.sh && sudo chmod +x dd_debian11.sh && sudo ./dd_debian11.sh && sudo rm -rf dd_debian11.sh
             echo "安装 x-ui-非原版..."
             bash <(curl -Ls https://raw.githubusercontent.com/zhyorhyz/x-ui-non-original/main/install.sh)
             ;;      
